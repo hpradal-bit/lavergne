@@ -31,6 +31,24 @@ body {
 
 img { max-width: 100%; display: block; }
 
+.icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  vertical-align: -0.2em;
+}
+.icon-sm { width: 1em; height: 1em; }
+.icon-inline { width: .82em; height: .82em; vertical-align: 0.05em; }
+
+a, button, .btn, .g-item, .room-card, .nav-toggle {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
 .wrap {
   max-width: 1120px;
   margin: 0 auto;
@@ -93,7 +111,7 @@ a { color: inherit; }
   color: var(--charcoal);
 }
 
-.brand-mark { font-size: 1.2rem; }
+.brand-mark { width: 1.4em; height: 1.4em; color: var(--terracotta); }
 
 .main-nav {
   display: flex;
@@ -264,7 +282,7 @@ a { color: inherit; }
   font-size: .92rem;
   color: var(--charcoal-soft);
 }
-.hi-icon { font-size: 1.3rem; }
+.hi-icon { width: 1.5rem; height: 1.5rem; color: var(--terracotta); }
 
 /* ---------- Sections ---------- */
 .section { padding: 88px 0; }
@@ -394,9 +412,13 @@ a { color: inherit; }
   gap: 12px;
 }
 .amenities-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: .96rem;
   color: var(--charcoal-soft);
 }
+.amenities-list .icon { color: var(--terracotta); }
 .amenities-note {
   font-size: .88rem;
   font-style: italic;
