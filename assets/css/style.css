@@ -595,11 +595,6 @@ p { margin: 0; }
 .res-stats div strong { display: block; font-family: var(--font-display); font-size: 1.5rem; }
 .res-stats div span { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.55); }
 
-.res-alt { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.16); }
-.res-alt p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 12px; }
-.res-alt-links { display: flex; gap: 10px; flex-wrap: wrap; }
-.res-alt-links .btn-sm { border: 1px solid rgba(255,255,255,0.25); }
-
 .booking-card {
   background: #fff;
   color: var(--ink);
