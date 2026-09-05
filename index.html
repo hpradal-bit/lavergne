@@ -162,11 +162,16 @@
     </div>
   </section>
 
-  <!-- ============ GALERIE IMMERSIVE (pin horizontal) ============ -->
-  <section id="galerie" class="gallery-pin" data-gallery-pin>
-    <p class="gallery-hint">La maison en images</p>
-    <div class="gallery-pin-inner">
-      <div class="gallery-track" data-gallery-track>
+  <!-- ============ GALERIE IMMERSIVE (défilement automatique) ============ -->
+  <section id="galerie" class="gallery-section">
+    <div class="wrap">
+      <div class="section-head center reveal" data-reveal>
+        <span class="eyebrow">Galerie</span>
+        <h2>La maison en images</h2>
+      </div>
+    </div>
+    <div class="gallery-marquee-row">
+      <div class="gallery-marquee-track">
         <figure class="gallery-card is-tall"><img src="assets/img/hero-salon.jpg" alt="Salon et salle à manger, poutres et pierres apparentes" loading="lazy"><figcaption>Le salon</figcaption></figure>
         <figure class="gallery-card"><img src="assets/img/chambre-1.jpg" alt="Chambre 1, lit double et canapé" loading="lazy"><figcaption>Chambre — lit double &amp; canapé</figcaption></figure>
         <figure class="gallery-card is-tall"><img src="assets/img/chambre-2.jpg" alt="Chambre sous charpente" loading="lazy"><figcaption>Sous la charpente</figcaption></figure>
@@ -175,11 +180,19 @@
         <figure class="gallery-card"><img src="assets/img/exterieur.jpg" alt="Terrasse en pierre, vue sur la campagne du Cantal" loading="lazy"><figcaption>La terrasse</figcaption></figure>
         <figure class="gallery-card is-tall"><img src="assets/img/salle-de-bain.jpg" alt="Salle de bain" loading="lazy"><figcaption>Salle de bain</figcaption></figure>
         <figure class="gallery-card"><img src="assets/img/detail.jpg" alt="Détail de décoration" loading="lazy"><figcaption>Le détail qui compte</figcaption></figure>
+        <!-- duplicated for seamless loop -->
+        <figure class="gallery-card is-tall" aria-hidden="true"><img src="assets/img/hero-salon.jpg" alt="" loading="lazy"><figcaption>Le salon</figcaption></figure>
+        <figure class="gallery-card" aria-hidden="true"><img src="assets/img/chambre-1.jpg" alt="" loading="lazy"><figcaption>Chambre — lit double &amp; canapé</figcaption></figure>
+        <figure class="gallery-card is-tall" aria-hidden="true"><img src="assets/img/chambre-2.jpg" alt="" loading="lazy"><figcaption>Sous la charpente</figcaption></figure>
+        <figure class="gallery-card" aria-hidden="true"><img src="assets/img/cuisine.jpg" alt="" loading="lazy"><figcaption>La cuisine</figcaption></figure>
+        <figure class="gallery-card is-tall" aria-hidden="true"><img src="assets/img/chambre-3.jpg" alt="" loading="lazy"><figcaption>Troisième chambre</figcaption></figure>
+        <figure class="gallery-card" aria-hidden="true"><img src="assets/img/exterieur.jpg" alt="" loading="lazy"><figcaption>La terrasse</figcaption></figure>
+        <figure class="gallery-card is-tall" aria-hidden="true"><img src="assets/img/salle-de-bain.jpg" alt="" loading="lazy"><figcaption>Salle de bain</figcaption></figure>
+        <figure class="gallery-card" aria-hidden="true"><img src="assets/img/detail.jpg" alt="" loading="lazy"><figcaption>Le détail qui compte</figcaption></figure>
       </div>
     </div>
-    <div class="gallery-progress"><div class="gallery-progress-bar" data-gallery-progress></div></div>
+    <p class="gallery-note">Envie de venir la découvrir en vrai ? <a href="#reservation">Réservez votre séjour →</a></p>
   </section>
-  <p class="gallery-note" style="background:var(--ink);margin:0;padding-bottom:60px">Envie de venir la découvrir en vrai ? <a href="#reservation">Réservez votre séjour →</a></p>
 
   <!-- ============ ÉQUIPEMENTS ============ -->
   <section id="equipements" class="section section-stone">
@@ -315,10 +328,10 @@
           <a href="tel:+33471469915" class="restaurant-phone">04 71 46 99 15</a>
         </article>
         <article class="restaurant-card is-featured">
-          <span class="restaurant-tag">Bib Gourmand</span>
+          <span class="restaurant-tag">Étoilé</span>
           <h4>La Borie d'Hélipse — Le Puy Tilleul</h4>
           <p class="restaurant-place">Tournemire, Cantal</p>
-          <p>Bib Gourmand 2023, chef Olivier Cloteau — cuisine du terroir cantalien dans un hôtel-spa contemporain avec vue sur le village.</p>
+          <p>1 étoile Michelin 2026, chef Olivier Cloteau — cuisine du terroir cantalien dans un hôtel-spa contemporain avec vue sur le village.</p>
           <a href="tel:+33471470575" class="restaurant-phone">04 71 47 05 75</a>
         </article>
       </div>

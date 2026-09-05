@@ -118,47 +118,6 @@
   })();
 
   /* ---------------------------------------------------------
-     Immersive horizontal gallery
-  --------------------------------------------------------- */
-  (function gallery() {
-    var section = document.querySelector("[data-gallery-pin]");
-    var track = document.querySelector("[data-gallery-track]");
-    var progressBar = document.querySelector("[data-gallery-progress]");
-    if (!section || !track) return;
-
-    if (!hasGSAP) {
-      // Fallback: native swipeable horizontal scroll, no pin.
-      section.classList.add("no-gsap");
-      return;
-    }
-
-    function build() {
-      var distance = track.scrollWidth - window.innerWidth + 64;
-      if (distance <= 0) return null;
-
-      return ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "+=" + (distance + window.innerHeight * 0.6),
-        scrub: 0.7,
-        pin: true,
-        anticipatePin: 1,
-        onUpdate: function (self) {
-          var x = -distance * self.progress;
-          gsap.set(track, { x: x });
-          if (progressBar) progressBar.style.width = (self.progress * 100) + "%";
-        }
-      });
-    }
-
-    var trigger = build();
-    window.addEventListener("load", function () {
-      if (trigger) trigger.refresh();
-      ScrollTrigger.refresh();
-    });
-  })();
-
-  /* ---------------------------------------------------------
      Section fade transitions (subtle depth on entry)
   --------------------------------------------------------- */
   (function sectionDepth() {
