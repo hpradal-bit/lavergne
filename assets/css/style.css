@@ -389,7 +389,7 @@ p { margin: 0; }
 .gallery-section .section-head h2 { color: #fff; }
 
 .gallery-marquee-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-.gallery-marquee-track { display: flex; align-items: center; gap: 28px; width: max-content; animation: marquee-left 42s linear infinite; }
+.gallery-marquee-track { display: flex; align-items: center; gap: 28px; width: max-content; animation: marquee-left 20s linear infinite; }
 .gallery-marquee-row:hover .gallery-marquee-track { animation-play-state: paused; }
 
 .gallery-card {
@@ -401,7 +401,6 @@ p { margin: 0; }
   overflow: hidden;
   box-shadow: var(--shadow-soft);
 }
-.gallery-card.is-tall { width: 300px; height: 420px; }
 .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-card figcaption {
   position: absolute; left: 0; right: 0; bottom: 0;
@@ -567,7 +566,7 @@ p { margin: 0; }
 .fete-card p:not(.fete-place) { color: var(--ink-soft); font-size: 0.88rem; }
 
 .fetes-marquee-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-.fetes-marquee-track { display: flex; align-items: flex-start; gap: 20px; width: max-content; animation: marquee-left 30s linear infinite; }
+.fetes-marquee-track { display: flex; align-items: flex-start; gap: 20px; width: max-content; animation: marquee-left 16s linear infinite; }
 .fetes-marquee-row:hover .fetes-marquee-track { animation-play-state: paused; }
 .fete-month-card {
   flex: 0 0 auto;
@@ -751,7 +750,6 @@ p { margin: 0; }
   .exp-media { order: -1; }
   .section { padding: 96px 0; }
   .gallery-card { width: 320px; height: 260px; }
-  .gallery-card.is-tall { width: 240px; height: 320px; }
 }
 
 @media (max-width: 700px) {
@@ -779,5 +777,4 @@ p { margin: 0; }
   .booking-fields-row { grid-template-columns: 1fr; }
   .section { padding: 76px 0; }
   .gallery-card { width: 78vw; height: 220px; }
-  .gallery-card.is-tall { width: 62vw; height: 280px; }
 }
