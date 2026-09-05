@@ -600,6 +600,33 @@ p { margin: 0; }
 .fete-place { font-size: 0.8rem; font-weight: 600; color: var(--clay); margin-bottom: 8px; }
 .fete-card p:not(.fete-place) { color: var(--ink-soft); font-size: 0.88rem; }
 
+.fetes-marquee-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.fetes-marquee-track { display: flex; align-items: flex-start; gap: 20px; width: max-content; animation: marquee-left 65s linear infinite; }
+.fetes-marquee-row:hover .fetes-marquee-track { animation-play-state: paused; }
+.fete-month-card {
+  flex: 0 0 auto;
+  width: 300px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 26px 24px;
+}
+.fete-month-card .fete-month-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--clay);
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.fete-mini + .fete-mini { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--line); }
+.fete-mini .fete-date { display: block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 4px; }
+.fete-mini h4 { font-family: var(--font-display); font-size: 1rem; font-weight: 500; margin-bottom: 2px; }
+.fete-mini .fete-place { font-size: 0.78rem; margin-bottom: 6px; }
+.fete-mini p:not(.fete-place):not(.fete-date) { color: var(--ink-soft); font-size: 0.82rem; }
+
 /* =========================================================
    Localisation
    ========================================================= */
@@ -748,7 +775,7 @@ p { margin: 0; }
 @media (max-width: 1080px) {
   .amenities-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .restaurants-grid, .fetes-grid { grid-template-columns: repeat(2, 1fr); }
+  .restaurants-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 920px) {
@@ -780,7 +807,8 @@ p { margin: 0; }
 
   .hero-meta { gap: 20px; }
   .amenities-grid { grid-template-columns: 1fr 1fr; }
-  .restaurants-grid, .fetes-grid { grid-template-columns: 1fr; }
+  .restaurants-grid { grid-template-columns: 1fr; }
+  .fete-month-card { width: 78vw; }
   .footer-grid { grid-template-columns: 1fr; gap: 30px; }
   .booking-fields-row { grid-template-columns: 1fr; }
   .section { padding: 76px 0; }
