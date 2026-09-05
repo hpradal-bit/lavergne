@@ -161,12 +161,15 @@ p { margin: 0; }
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: 0 8px 30px -20px rgba(22,19,15,0.4);
 }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; position: relative; }
+.nav-inner { display: flex; align-items: center; justify-content: flex-end; position: relative; }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.08rem;
@@ -179,18 +182,21 @@ p { margin: 0; }
 
 .nav-links {
   display: flex;
-  align-items: center;
-  gap: 34px;
+  position: fixed; inset: 0 0 0 auto; width: min(320px, 84vw); z-index: 101;
+  background: var(--paper); flex-direction: column; align-items: flex-start;
+  padding: 100px 30px 30px; gap: 26px;
+  transform: translateX(100%); transition: transform 0.4s var(--ease);
+  box-shadow: -20px 0 50px -20px rgba(0,0,0,0.3);
 }
+.nav-links.is-open { transform: translateX(0); }
 .nav-links a:not(.btn) {
-  font-size: 0.88rem;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.88);
   position: relative;
   padding-bottom: 4px;
   transition: color 0.4s var(--ease);
 }
-.is-scrolled .nav-links a:not(.btn) { color: var(--ink-soft); }
 .nav-links a:not(.btn)::after {
   content: "";
   position: absolute; left: 0; right: 100%; bottom: 0;
@@ -201,12 +207,13 @@ p { margin: 0; }
 .nav-links a:not(.btn):hover { color: var(--gold); }
 
 .nav-toggle {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 5px;
   width: 42px; height: 42px;
   align-items: center; justify-content: center;
   background: none; border: none;
+  position: relative; z-index: 102;
 }
 .nav-toggle span {
   width: 22px; height: 1.6px;
@@ -215,6 +222,10 @@ p { margin: 0; }
   transition: background 0.3s var(--ease), transform 0.3s var(--ease), opacity 0.3s var(--ease);
 }
 .is-scrolled .nav-toggle span { background: var(--ink); }
+.nav-toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-toggle.is-open span { background: var(--ink); }
 
 /* =========================================================
    Hero
@@ -752,26 +763,6 @@ p { margin: 0; }
   .exp-media { order: -1; }
   .section { padding: 96px 0; }
   .gallery-card { width: 320px; height: 260px; }
-}
-
-@media (max-width: 1140px) {
-  .nav-links {
-    position: fixed; inset: 0 0 0 auto; width: min(320px, 84vw);
-    background: var(--paper); flex-direction: column; align-items: flex-start;
-    padding: 100px 30px 30px; gap: 26px;
-    transform: translateX(100%); transition: transform 0.4s var(--ease);
-    box-shadow: -20px 0 50px -20px rgba(0,0,0,0.3);
-  }
-  .nav-links.is-open { transform: translateX(0); }
-  .nav-links a:not(.btn) { color: var(--ink-soft) !important; font-size: 1.05rem; }
-  .nav-toggle { display: flex; }
-  .nav-toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-  .nav-toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-  .nav-toggle.is-open span { background: var(--ink); }
-
-  .nav-inner { justify-content: flex-end; }
-  .brand { position: absolute; left: 50%; transform: translateX(-50%); }
 }
 
 @media (max-width: 700px) {
