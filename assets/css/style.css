@@ -601,7 +601,7 @@ p { margin: 0; }
 .fete-card p:not(.fete-place) { color: var(--ink-soft); font-size: 0.88rem; }
 
 .fetes-marquee-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-.fetes-marquee-track { display: flex; align-items: flex-start; gap: 20px; width: max-content; animation: marquee-left 65s linear infinite; }
+.fetes-marquee-track { display: flex; align-items: flex-start; gap: 20px; width: max-content; animation: marquee-left 30s linear infinite; }
 .fetes-marquee-row:hover .fetes-marquee-track { animation-play-state: paused; }
 .fete-month-card {
   flex: 0 0 auto;
