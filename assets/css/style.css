@@ -277,8 +277,11 @@ p { margin: 0; }
 .hero .eyebrow { color: #e9d9b8; }
 .hero-content .eyebrow { margin-bottom: 22px; display: block; }
 .hero h1 {
-  font-size: clamp(2.6rem, 2rem + 4.2vw, 5.6rem);
-  max-width: 16ch;
+  font-size: clamp(1.5rem, 1rem + 3.4vw, 4.6rem);
+  max-width: none;
+  white-space: nowrap;
+  font-style: italic;
+  font-weight: 500;
   margin-bottom: 0;
   color: #fff;
 }
