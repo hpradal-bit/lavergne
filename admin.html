@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — La Maison de l'Oncle Jean</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css?v=20260930a">
+</head>
+<body>
+
+<div class="admin-wrap">
+  <header class="admin-header">
+    <h1>Espace propriétaire</h1>
+    <span>La Maison de l'Oncle Jean</span>
+  </header>
+
+  <!-- ============ LOGIN ============ -->
+  <section id="loginPanel" class="admin-card">
+    <h2>Connexion</h2>
+    <form id="loginForm">
+      <label for="loginEmail">E-mail</label>
+      <input type="email" id="loginEmail" required autocomplete="username">
+      <label for="loginPassword">Mot de passe</label>
+      <input type="password" id="loginPassword" required autocomplete="current-password">
+      <button type="submit" class="admin-btn">Se connecter</button>
+      <p class="admin-error" id="loginError" hidden></p>
+    </form>
+  </section>
+
+  <!-- ============ DASHBOARD (hidden until logged in) ============ -->
+  <div id="dashboard" hidden>
+    <div class="admin-topbar">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="admin-link-btn">Se déconnecter</button>
+    </div>
+
+    <!-- Prices -->
+    <section class="admin-card">
+      <h2>Tarifs par nuit</h2>
+      <p class="admin-hint">Définissez le prix par nuit pour chaque mois. Il s'affiche automatiquement sur le site et dans le calcul du total de réservation.</p>
+      <form id="pricesForm" class="admin-prices-grid"></form>
+      <button type="submit" form="pricesForm" class="admin-btn">Enregistrer les tarifs</button>
+      <p class="admin-status" id="pricesStatus" hidden></p>
+    </section>
+
+    <!-- Calendars -->
+    <section class="admin-card">
+      <h2>Synchronisation des calendriers</h2>
+      <p class="admin-hint">Collez ici les liens d'export iCal (.ics) de chaque plateforme — vous les trouverez dans les paramètres de calendrier de chaque compte. Synchronisation automatique toutes les 3h ; les dates réservées ailleurs bloquent automatiquement le calendrier du site.</p>
+      <form id="icalForm" class="admin-ical-form">
+        <label>Airbnb<input type="url" id="icalAirbnb" placeholder="https://www.airbnb.fr/calendar/ical/....ics"></label>
+        <label>Booking.com<input type="url" id="icalBooking" placeholder="https://admin.booking.com/....ics"></label>
+        <label>Abritel / Vrbo<input type="url" id="icalAbritel" placeholder="https://www.abritel.fr/icalendar/....ics"></label>
+        <button type="submit" class="admin-btn">Enregistrer les liens</button>
+      </form>
+      <button id="syncNowBtn" class="admin-btn admin-btn-outline">Synchroniser maintenant</button>
+      <p class="admin-status" id="icalStatus" hidden></p>
+      <ul class="admin-sync-log" id="syncLog"></ul>
+    </section>
+
+    <!-- Photos -->
+    <section class="admin-card">
+      <h2>Photos de la galerie</h2>
+      <p class="admin-hint">Ajoutez des photos pour tenir la galerie du site à jour. Elles s'affichent automatiquement dans le défilement, en plus des photos existantes.</p>
+      <form id="photoForm" class="admin-photo-form">
+        <input type="file" id="photoFile" accept="image/*" required>
+        <input type="text" id="photoCaption" placeholder="Légende (ex. Le salon)">
+        <button type="submit" class="admin-btn">Ajouter la photo</button>
+      </form>
+      <p class="admin-status" id="photoStatus" hidden></p>
+      <div class="admin-photo-grid" id="photoGrid"></div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js?v=20260930a"></script>
+<script src="assets/js/admin.js?v=20260930a"></script>
+</body>
+</html>

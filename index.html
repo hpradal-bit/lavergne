@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260905b">
+<link rel="stylesheet" href="assets/css/style.css?v=20260930a">
 <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -619,6 +619,7 @@
           <div><strong>3</strong><span>Chambres</span></div>
           <div><strong>24h</strong><span>Délai de réponse</span></div>
         </div>
+        <p class="res-price-note" id="tarifFromPrice"></p>
       </div>
 
       <div class="booking-card reveal-right" data-reveal>
@@ -664,6 +665,7 @@
           <div class="booking-summary" id="bookingSummary">
             <strong id="summaryDates">—</strong>
             <span id="summaryNights"></span>
+            <span id="summaryPrice" class="booking-summary-price"></span>
           </div>
 
           <div class="booking-actions">
@@ -715,7 +717,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="assets/js/main.js?v=20260905b" defer></script>
-<script src="assets/js/booking.js?v=20260905b" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="assets/js/supabase-config.js?v=20260930a" defer></script>
+<script src="assets/js/main.js?v=20260930a" defer></script>
+<script src="assets/js/booking.js?v=20260930a" defer></script>
 </body>
 </html>

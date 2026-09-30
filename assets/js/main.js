@@ -132,6 +132,51 @@
   })();
 
   /* ---------------------------------------------------------
+     Gallery: merge owner-uploaded photos (Supabase) into the
+     marquee. Fails silently and keeps the static photos if
+     Supabase is unreachable — never shows a broken gallery.
+  --------------------------------------------------------- */
+  (function gallerySync() {
+    if (!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY || typeof window.supabase === "undefined") return;
+    var track = document.querySelector(".gallery-marquee-track");
+    if (!track) return;
+
+    var client = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+    client.from("gallery_photos").select("storage_path, caption, position").order("position").then(function (res) {
+      if (res.error || !res.data || !res.data.length) return;
+
+      var baseCards = Array.prototype.slice.call(track.querySelectorAll("figure.gallery-card:not([aria-hidden])"));
+      var newCards = res.data.map(function (photo) {
+        var url = window.SUPABASE_URL + "/storage/v1/object/public/gallery/" + photo.storage_path;
+        return { url: url, caption: photo.caption || "" };
+      });
+
+      function buildFigure(src, caption, hidden) {
+        var fig = document.createElement("figure");
+        fig.className = "gallery-card";
+        if (hidden) fig.setAttribute("aria-hidden", "true");
+        var img = document.createElement("img");
+        img.src = src;
+        img.loading = "lazy";
+        img.alt = hidden ? "" : caption;
+        fig.appendChild(img);
+        if (caption) {
+          var figcaption = document.createElement("figcaption");
+          figcaption.textContent = caption;
+          fig.appendChild(figcaption);
+        }
+        return fig;
+      }
+
+      track.innerHTML = "";
+      baseCards.forEach(function (card) { track.appendChild(card); });
+      newCards.forEach(function (p) { track.appendChild(buildFigure(p.url, p.caption, false)); });
+      baseCards.forEach(function (card) { track.appendChild(card.cloneNode(true)); });
+      newCards.forEach(function (p) { track.appendChild(buildFigure(p.url, p.caption, true)); });
+    });
+  })();
+
+  /* ---------------------------------------------------------
      Footer year
   --------------------------------------------------------- */
   var yearEl = document.getElementById("year");

@@ -1,33 +1,18 @@
 /* ==========================================================================
    Booking widget — "La Maison de l'Oncle Jean"
    ==========================================================================
-   This is a lead-capture calendar, not a live transactional booking engine.
-   It lets a visitor pick dates, see them validated against a local list of
-   unavailable ranges, and send a reservation request by e-mail.
+   Lead-capture calendar: a visitor picks dates, sees them checked against
+   real availability, sees the price for their stay, and sends a
+   reservation request by e-mail (24h manual confirmation, no payment here).
 
-   ROADMAP TO REAL MULTI-PLATFORM SYNC (Airbnb / Booking.com / Abritel-Vrbo)
-   --------------------------------------------------------------------------
-   Every major OTA (Airbnb, Booking.com, Vrbo/Abritel) exposes a private
-   iCal export URL per listing, and accepts importing external iCal URLs to
-   block dates on their side too. That's the standard way independent sites
-   sync availability without a paid channel manager:
-
-     1. Backend job (e.g. a small serverless function / cron) fetches the
-        iCal feed from each platform every 15-30 min:
-          - Airbnb:   Listing > Calendar > Availability > Export calendar
-          - Booking.com: Extranet > Calendar > Sync calendars
-          - Abritel/Vrbo: Owner dashboard > Calendar > Export
-     2. It merges all busy ranges into one JSON file, e.g.:
-          { "unavailable": [{ "start": "2026-07-04", "end": "2026-07-11", "source": "airbnb" }, ...] }
-     3. This JSON is fetched by `loadUnavailableRanges()` below instead of
-        the empty in-file default.
-     4. When a visitor books directly on this site, the backend both stores
-        the booking AND republishes this site's own iCal export URL — which
-        the owner adds as an external calendar in Airbnb/Booking/Abritel, so
-        the new direct booking blocks the dates everywhere else too.
-     5. Until that backend exists, `BOOKING_UNAVAILABLE` stays empty and
-        every request is manually confirmed by e-mail within 24h — never
-        show fake "booked" dates to real visitors.
+   Availability and pricing are read from Supabase (public, read-only):
+     - `unavailable_ranges` is kept in sync every 3h from the owner's real
+       Airbnb / Booking.com / Abritel iCal export links (see admin.html and
+       the `sync-calendars` Edge Function) — never fake data.
+     - `monthly_prices` holds one price per night per calendar month, set by
+       the owner from admin.html.
+   If Supabase can't be reached, the calendar still works with all dates
+   open and no price shown — it never invents fake availability or prices.
    ========================================================================== */
 
 (function () {
@@ -35,10 +20,6 @@
 
   // TODO(owner): replace with the real reservation inbox before going live.
   var OWNER_EMAIL = "reservation@lamaisondeloncanjean.fr";
-
-  // Populate this from loadUnavailableRanges() once real sync exists.
-  // Shape: [{ start: "YYYY-MM-DD", end: "YYYY-MM-DD" }]
-  var BOOKING_UNAVAILABLE = [];
 
   var form = document.getElementById("bookingForm");
   if (!form) return;
@@ -52,6 +33,8 @@
   var summary = document.getElementById("bookingSummary");
   var summaryDates = document.getElementById("summaryDates");
   var summaryNights = document.getElementById("summaryNights");
+  var summaryPrice = document.getElementById("summaryPrice");
+  var tarifFromPrice = document.getElementById("tarifFromPrice");
 
   var MONTHS_FR = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
   var DOW_FR = ["L","M","M","J","V","S","D"];
@@ -60,6 +43,9 @@
   var viewYear = today.getFullYear();
   var viewMonth = today.getMonth();
   var selection = { start: null, end: null };
+
+  var BOOKING_UNAVAILABLE = []; // [{ start: "YYYY-MM-DD", end: "YYYY-MM-DD" }]
+  var MONTHLY_PRICES = {}; // { 1: 90, 2: 90, ... 12: 95 }
 
   function toISO(d) {
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
@@ -73,6 +59,23 @@
   function isInSelection(date) {
     if (!selection.start || !selection.end) return false;
     return date > selection.start && date < selection.end;
+  }
+
+  function priceForNight(date) {
+    var month = date.getMonth() + 1;
+    return MONTHLY_PRICES[month];
+  }
+
+  function stayTotal(start, end) {
+    var cursor = new Date(start);
+    var total = 0;
+    var hasAllPrices = true;
+    while (cursor < end) {
+      var p = priceForNight(cursor);
+      if (typeof p === "number") { total += p; } else { hasAllPrices = false; }
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return hasAllPrices ? total : null;
   }
 
   function render() {
@@ -154,6 +157,10 @@
     return d.getDate() + " " + MONTHS_FR[d.getMonth()].slice(0, 3) + " " + d.getFullYear();
   }
 
+  function formatEUR(n) {
+    return n.toLocaleString("fr-FR") + " €";
+  }
+
   function updateInputs() {
     checkinInput.value = selection.start ? formatShort(selection.start) : "";
     checkoutInput.value = selection.end ? formatShort(selection.end) : "";
@@ -162,6 +169,8 @@
       var nights = Math.round((selection.end - selection.start) / 86400000);
       summaryDates.textContent = formatShort(selection.start) + " → " + formatShort(selection.end);
       summaryNights.textContent = nights + (nights > 1 ? " nuits" : " nuit");
+      var total = stayTotal(selection.start, selection.end);
+      summaryPrice.textContent = total !== null ? formatEUR(total) + " au total" : "";
       summary.classList.add("is-visible");
     } else {
       summary.classList.remove("is-visible");
@@ -193,18 +202,46 @@
       return;
     }
 
-    var subject = "Demande de réservation — La Maison de l'Oncle Jean";
-    var body = [
+    var total = stayTotal(selection.start, selection.end);
+    var bodyLines = [
       "Dates souhaitées : " + formatShort(selection.start) + " au " + formatShort(selection.end),
       "Voyageurs : " + guests,
-      "E-mail de contact : " + email,
-      "",
-      "(Message envoyé depuis le site lamaisondeloncanjean — demande à confirmer manuellement.)"
-    ].join("\n");
+      "E-mail de contact : " + email
+    ];
+    if (total !== null) bodyLines.push("Total estimé : " + formatEUR(total));
+    bodyLines.push("", "(Message envoyé depuis le site lamaisondeloncanjean — demande à confirmer manuellement.)");
 
-    var mailto = "mailto:" + OWNER_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    var subject = "Demande de réservation — La Maison de l'Oncle Jean";
+    var mailto = "mailto:" + OWNER_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(bodyLines.join("\n"));
     window.location.href = mailto;
   });
 
   render();
+
+  /* ---------------------------------------------------------
+     Load real availability + pricing from Supabase.
+     Fails silently (open calendar, no price shown) if the
+     network/CDN is unavailable — never fabricates data.
+  --------------------------------------------------------- */
+  (function loadLiveData() {
+    if (!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY || typeof window.supabase === "undefined") return;
+
+    var client = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+
+    client.from("unavailable_ranges").select("start_date, end_date").then(function (res) {
+      if (res.error || !res.data) return;
+      BOOKING_UNAVAILABLE = res.data.map(function (r) { return { start: r.start_date, end: r.end_date }; });
+      render();
+    });
+
+    client.from("monthly_prices").select("month, price_per_night").then(function (res) {
+      if (res.error || !res.data) return;
+      res.data.forEach(function (r) { MONTHLY_PRICES[r.month] = Number(r.price_per_night); });
+      updateInputs();
+      var prices = Object.keys(MONTHLY_PRICES).map(function (k) { return MONTHLY_PRICES[k]; });
+      if (prices.length && tarifFromPrice) {
+        tarifFromPrice.textContent = "À partir de " + formatEUR(Math.min.apply(null, prices)) + " / nuit selon la période";
+      }
+    });
+  })();
 })();

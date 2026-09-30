@@ -28,7 +28,9 @@
   --radius-sm: 10px;
   --shadow-soft: 0 20px 50px -24px rgba(22, 19, 15, 0.35);
   --shadow-card: 0 14px 34px -18px rgba(22, 19, 15, 0.28);
+  --shadow-lift: 0 26px 46px -20px rgba(22, 19, 15, 0.32);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * { box-sizing: border-box; }
@@ -109,17 +111,17 @@ p { margin: 0; }
   font-size: 0.92rem;
   padding: 15px 30px;
   border: 1px solid transparent;
-  transition: transform 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease), color 0.25s var(--ease), border-color .25s var(--ease);
+  transition: transform 0.45s var(--ease-out), background 0.35s var(--ease-out), box-shadow 0.45s var(--ease-out), color 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
 }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+.btn:hover { transform: translateY(-3px) scale(1.015); }
+.btn:active { transform: translateY(-1px) scale(1); transition-duration: 0.15s; }
 
 .btn-primary {
   background: var(--clay);
   color: #fff;
   box-shadow: 0 16px 30px -14px rgba(171, 90, 52, 0.65);
 }
-.btn-primary:hover { background: var(--clay-dark); }
+.btn-primary:hover { background: var(--clay-dark); box-shadow: 0 24px 40px -16px rgba(171, 90, 52, 0.75); }
 
 .btn-outline {
   background: transparent;
@@ -143,6 +145,15 @@ p { margin: 0; }
 
 .btn-sm { padding: 11px 22px; font-size: 0.84rem; }
 .btn[disabled] { opacity: 0.45; pointer-events: none; }
+
+/* Shared premium hover-lift for content cards throughout the site */
+.restaurant-card, .fete-month-card, .poi-card, .review-card, .amenity {
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), background 0.3s var(--ease-out);
+}
+.restaurant-card:hover, .fete-month-card:hover, .poi-card:hover, .review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lift);
+}
 
 /* =========================================================
    Nav
@@ -355,8 +366,18 @@ p { margin: 0; }
 .reveal-right.js-armed { opacity: 0; transform: translateX(64px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
 .reveal-right.js-armed.is-visible { opacity: 1; transform: none; }
 
-.stagger.js-armed > * { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+.stagger.js-armed > * { opacity: 0; transform: translateY(28px); transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out); }
 .stagger.js-armed.is-visible > * { opacity: 1; transform: none; }
+.stagger.js-armed > *:nth-child(1) { transition-delay: 0s; }
+.stagger.js-armed > *:nth-child(2) { transition-delay: 0.06s; }
+.stagger.js-armed > *:nth-child(3) { transition-delay: 0.12s; }
+.stagger.js-armed > *:nth-child(4) { transition-delay: 0.18s; }
+.stagger.js-armed > *:nth-child(5) { transition-delay: 0.24s; }
+.stagger.js-armed > *:nth-child(6) { transition-delay: 0.3s; }
+.stagger.js-armed > *:nth-child(7) { transition-delay: 0.36s; }
+.stagger.js-armed > *:nth-child(8) { transition-delay: 0.42s; }
+.stagger.js-armed > *:nth-child(9) { transition-delay: 0.48s; }
+.stagger.js-armed > *:nth-child(n+10) { transition-delay: 0.54s; }
 
 /* =========================================================
    Presentation / intro
@@ -743,6 +764,8 @@ p { margin: 0; }
 }
 .booking-summary.is-visible { display: block; }
 .booking-summary strong { display: block; margin-bottom: 4px; }
+.booking-summary-price { display: block; margin-top: 6px; font-weight: 700; color: var(--clay); }
+.res-price-note { margin-top: 14px; font-size: 0.82rem; color: rgba(255,255,255,0.68); }
 
 .booking-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
 .booking-note { font-size: 0.76rem; color: var(--ink-soft); margin-top: 12px; }
